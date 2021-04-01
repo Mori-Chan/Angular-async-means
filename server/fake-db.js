@@ -1,80 +1,73 @@
-const Product = require("./model/product");
+const Comment = require("./model/comment");
 
 class FakeDb {
 
   constructor() {
-    this.products = [
+    this.comments = [
       {
-        coverImage: './assets/img/phone-cover.jpg',
-        name: 'Phone XL',
-        price: 799,
-        description: 'A large phone with one of the best screens',
-        heding1: 'サンプルテキスト１',
-        heding2: 'サンプルテキスト２',
-        heding3: 'サンプルテキスト３',
-        headingtext1: 'サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト',
-        headingtext2: 'テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章',
-        headingtext3: 'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.'
+        date: '2021-03-01 08:32:21.000000',
+        message: 'おつでーす！',
+        user: [
+          {initial: '佐'},
+          {name: '佐藤 考太'},
+          {uid: 1}
+        ],
       },
       {
-        coverImage: './assets/img/phone-cover.jpg',
-        name: 'Phone Mini',
-        price: 699,
-        description: 'A great phone with one of the best cameras',
-        heding1: 'サンプルテキスト１',
-        heding2: 'サンプルテキスト２',
-        heding3: 'サンプルテキスト３',
-        headingtext1: 'サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト',
-        headingtext2: 'テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章',
-        headingtext3: 'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.'
+        date: '2021-03-01 08:32:22.000000',
+        message: '作業終わったー？',
+        user: [
+          {initial: '佐'},
+          {name: '佐藤 考太'},
+          {uid: 1}],
       },
       {
-        coverImage: './assets/img/phone-cover.jpg',
-        name: 'Phone Standard',
-        price: 299,
-        description: '',
-        heding1: 'サンプルテキスト１',
-        heding2: 'サンプルテキスト２',
-        heding3: 'サンプルテキスト３',
-        headingtext1: 'サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト',
-        headingtext2: 'テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章',
-        headingtext3: 'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.'
+        date: '2021-03-01 08:32:47.000000',
+        message: 'おつでーす！',
+        user: [
+          {initial: '森'},
+          {name: '森井 將裕'},
+          {uid: 2}],
       },
       {
-        coverImage: './assets/img/phone-cover.jpg',
-        name: 'Phone Special',
-        price: 999,
-        description: '',
-        heding1: 'サンプルテキスト１',
-        heding2: 'サンプルテキスト２',
-        heding3: 'サンプルテキスト３',
-        headingtext1: 'サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト　サンプルテキスト',
-        headingtext2: 'テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章　テキスト文章',
-        headingtext3: 'Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.'
+        date: '2021-03-01 08:32:48.000000',
+        message: '終わってまーす',
+        user: [
+          {initial: '森'},
+          {name: '森井 將裕'},
+          {uid: 2}],
+      },
+      {
+        date: '2021-03-02 07:30:39.000000',
+        message: 'aaaaaaaaa',
+        user: [
+          {initial: '佐'},
+          {name: '佐藤 考太'},
+          {uid: 1}],
       }
     ];
   }
 
   async initDb() {
     await this.cleanDb();
-    this.pushProductsToDb();
+    this.pushCommentsToDb();
   }
 
   async cleanDb() {
-    await Product.deleteMany({});
+    await Comment.deleteMany({});
   }
 
-  pushProductsToDb() {
-    this.products.forEach(
-      (product) => {
-        const newProduct = new Product(product);
+  pushCommentsToDb() {
+    this.comments.forEach(
+      (comments) => {
+        const newProduct = new Product(comments);
         newProduct.save();
       }
     )
   }
 
   seeDb() {
-    this.pushProductsToDb();
+    this.pushCommentsToDb();
   }
 }
 

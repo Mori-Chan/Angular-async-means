@@ -4,6 +4,7 @@ import { UniqueService } from '../services/unique.service';
 import { User } from '../class/user';
 import { timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { SocketioService } from '../services/socketio.service';
 
 const CURRENT_USER: User = new User(2, '森井 將裕');
 @Component({
@@ -17,10 +18,11 @@ export class ChatComponent implements OnInit {
   comment = '';
   currentUser = CURRENT_USER;
 
-  constructor(private uniqueService: UniqueService) { }
+  constructor(private socketIoService: SocketioService,private uniqueService: UniqueService) { }
 
   ngOnInit() {
     this.readComments();
+    this.socketIoService.connect();
   }
 
   readComments() {
