@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     }
   );
   if(process.env.NODE_ENV === 'production') {
-    const appPath = path.join( __dirname, '..', 'dist', 'reservation-app');
+    const appPath = path.join( __dirname, '..', 'dist', 'angular-async');
     app.use(express.static(appPath));
     app.get('*', function(req, res) {
       res.sendFile(path.resolve(appPath, 'index.html'));
