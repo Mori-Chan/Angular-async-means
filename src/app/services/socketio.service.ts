@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../environments/environment';
+import { Comment } from '../class/comment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,44 +11,66 @@ export class SocketioService {
 
   socket: Socket
 
-  message = "operative";
-
   constructor() { }
 
-  connect() {
+  connect(chatId) {
     this.socket = io(environment.SOCKET_ENDPOINT);
-    this.socket.emit('sendMessage', { message: this.message });
+    this.socket.emit('joinChat', { chatId: chatId });
+    this.socket.emit('selectMessages', {chatId});
   }
 
-  // startGame(gameId) {
-  //   this.socket.emit('startGame', { gameId: gameId });
-  // }
+  recieveSelectMessages() {
+    return new Observable((observer) => {
+      this.socket.on('recieveSelectMessages', (messages) => {
+        observer.next(messages);
+      });
+    });
+  }
 
-  // sendGameUpdate(gameId, words) {
-  //   this.socket.emit('gameUpdate', { gameId: gameId, words: words });
-  // }
+  recieveMessage() {
+    return new Observable((observer) => {
+      this.socket.on('receiveMessage', (message) => {
+        observer.next(message);
+      });
+    });
+  }
 
-  // recieveJoinedPlayers() {
-  //   return new Observable((observer) => {
-  //     this.socket.on('joinGame', (message) => {
-  //       observer.next(message);
-  //     });
-  //   });
-  // }
+  sendMessage(message, chatId) {
+    this.socket.emit('sendMessage', {message, chatId});
+    this.socket.emit('selectMessages', {chatId});
+  }
 
-  // recieveStartGame() {
-  //   return new Observable((observer) => {
-  //     this.socket.on('startGame', (words) => {
-  //       observer.next(words);
-  //     });
-  //   });
-  // }
+  recieveJoinedPlayers() {
+    return new Observable((observer) => {
+      this.socket.on('joinChat', (message) => {
+        observer.next(message);
+      });
+    });
+  }
 
-  // recieveGameUpdate(gameId) {
-  //   return new Observable((observer) => {
-  //     this.socket.on(gameId, (words) => {
-  //       observer.next(words);
-  //     });
-  //   });
-  // }
+  deleteComment(comment: Comment, chatId) {
+    this.socket.emit('deleteComment', {comment, chatId});
+    this.socket.emit('selectMessages', {chatId});
+  }
+
+  recieveDeleteComment() {
+    return new Observable((observer) => {
+      this.socket.on('recieveDeleteComment', (message) => {
+        observer.next(message);
+      });
+    });
+  }
+
+  updateComment(comment: Comment, chatId) {
+    this.socket.emit('updateComment', {comment, chatId});
+    this.socket.emit('selectMessages', {chatId});
+  }
+
+  recieveUpdateComment() {
+    return new Observable((observer) => {
+      this.socket.on('recieveUpdateComment', (message) => {
+        observer.next(message);
+      });
+    });
+  }
 }

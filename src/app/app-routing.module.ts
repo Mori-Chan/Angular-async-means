@@ -5,7 +5,8 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
 
 
 const routes: Routes = [
-  { path: '', component: ChatComponent },
+  { path:'', redirectTo: 'chat', pathMatch: 'full' },
+  { path: 'chat', component: ChatComponent },
   { path: '**', component: NotFoundComponent }
 ];
 

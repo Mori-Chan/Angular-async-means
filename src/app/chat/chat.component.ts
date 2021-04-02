@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Read } from '../class/read';
+import { Comment } from '../class/comment';
 import { UniqueService } from '../services/unique.service';
 import { User } from '../class/user';
-import { timer } from 'rxjs';
+import { timer, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { SocketioService } from '../services/socketio.service';
+import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const CURRENT_USER: User = new User(2, '森井 將裕');
 @Component({
@@ -13,51 +16,80 @@ const CURRENT_USER: User = new User(2, '森井 將裕');
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
-  comments:  Read[];
-  selectedRead:  Read  = { id :  null, date: null, message:  null, uid:  null, name:  null, initial: null };
+  chatId: string;
+  comments$: Comment[];
   comment = '';
   currentUser = CURRENT_USER;
 
-  constructor(private socketIoService: SocketioService,private uniqueService: UniqueService) { }
+  constructor(
+    private socketIoService: SocketioService,
+    private route: ActivatedRoute,
+    // private snackbar: MatSnackBar,
+    private uniqueService: UniqueService
+  ) { }
 
   ngOnInit() {
-    this.readComments();
-    this.socketIoService.connect();
+    // this.chatId = this.route.snapshot.paramMap.get('id');
+    this.chatId = 'chat';
+    this.socketIoService.connect(this.chatId);
+    this.recieveJoinedPlayers();
+    this.recieveSelectMessages();
+    this.recieveMessage();
+    this.recieveDeleteComment();
+    this.recieveUpdateComment();
   }
 
-  readComments() {
-    this.uniqueService.readComments().subscribe((comments: Read[])=>{
-      this.comments = comments;
-      // console.log(this.comments);
+  recieveJoinedPlayers() {
+    this.socketIoService.recieveJoinedPlayers().subscribe((message: string) => {
+      // this.snackbar.open(message, '', {
+      //   duration: 3000,
+      // });
+      console.log(message);
     })
   }
 
+  recieveSelectMessages() {
+    this.socketIoService.recieveSelectMessages().subscribe((messages: Comment[]) => {
+      this.comments$ = messages;
+      // console.log(this.comments$);
+      // console.log(messages);
+    })
+  }
+
+  recieveMessage() {
+    this.socketIoService.recieveMessage().subscribe((message) => {
+      console.log(message);
+    })
+  }
+
+
   createComment(comment: string) {
-    let selectedRead = this.selectedRead;
-    selectedRead.message = comment;
-    selectedRead.initial=this.currentUser.initial;
-    selectedRead.uid=this.currentUser.uid;
-    selectedRead.name=this.currentUser.name;
-    // console.log(this.uniqueService.createComment(selectedRead));
-    this.uniqueService.createComment(selectedRead).subscribe(
-        res => { console.log(res) },//send success response
-        (err) => { console.log(err) }//send error response
-      );;
+    let message = {
+      date: Date(),
+      message: comment,
+      uid: this.currentUser.uid
+    };
+    this.socketIoService.sendMessage(message, this.chatId);
     comment = "";
-    this.readComments();
   }
 
-  updateComment(comment: Read){
-    this.uniqueService.updateComment(comment).subscribe((read: Read)=>{
-      console.log("Read updated" , read);
-    });
-    this.readComments();
+  deleteComment(comment: Comment) {
+    this.socketIoService.deleteComment(comment, this.chatId);
   }
 
-  deleteComment(comment: Read): void{
-    this.uniqueService.deleteComment(comment.id).subscribe((read: Read)=>{
-      console.log("Read deleted, ", read);
-    });
-    this.readComments();
+  recieveDeleteComment() {
+    this.socketIoService.recieveDeleteComment().subscribe((message: string) => {
+      console.log(message);
+    })
+  }
+
+  updateComment(comment: Comment) {
+    this.socketIoService.updateComment(comment, this.chatId);
+  }
+
+  recieveUpdateComment() {
+    this.socketIoService.recieveUpdateComment().subscribe((message: string) => {
+      console.log(message);
+    })
   }
 }

@@ -1,7 +1,8 @@
 <section class="chat">
   <div class="chat-timeline">
+    <ng-container *ngIf="comments$">
     <div
-      *ngFor="let comment of comments"
+      *ngFor="let comment of comments$"
       class="list-group-item list-group-item-action flex-column align-items-start border-0"
     >
       <div class="media">
@@ -42,6 +43,7 @@
         </div>
       </div>
     </div>
+    </ng-container>
   </div>
 </section>
 
