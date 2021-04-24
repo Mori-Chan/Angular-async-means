@@ -34,13 +34,6 @@ io.on('connection', (socket) => {
       }
     }
   );
-  if(process.env.NODE_ENV === 'production') {
-    const appPath = path.join( __dirname, '..', 'dist', 'angular-async');
-    app.use(express.static(appPath));
-    app.get('*', function(req, res) {
-      res.sendFile(path.resolve(appPath, 'index.html'));
-    });
-  }
 
   socket.on('joinChat', ({chatId}) => {
     socket.join(chatId);
@@ -66,7 +59,7 @@ io.on('connection', (socket) => {
         }
       }
     ]).then((messages) => {
-      // console.log(messages);
+      console.log(chatId);
       io.to(chatId.chatId).emit('recieveSelectMessages', messages);
     }).catch(err => console.log(err));
   })
@@ -104,6 +97,14 @@ io.on('connection', (socket) => {
     io.to(message.chatId).emit('recieveUpdateComment', 'A message was updated!');
   })
 })
+
+if(process.env.NODE_ENV === 'production') {
+  const appPath = path.join( __dirname, '..', 'dist', 'angular-async-means');
+  app.use(express.static(appPath));
+  app.get('*', function(req, res) {
+    res.sendFile(path.resolve(appPath, 'index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 3001;
 
