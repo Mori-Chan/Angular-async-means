@@ -39,6 +39,7 @@ io.on('connection', (socket) => {
     socket.join(chatId);
     socket.to(chatId).emit('joinChat','Someone joined this chat!');
   })
+
   socket.on('selectMessages', (chatId) => {
     Comment.aggregate([
       {
