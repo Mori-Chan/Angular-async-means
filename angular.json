@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-async": {
+    "angular-async-means": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-async",
+            "outputPath": "dist/angular-async-means",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-async:build"
+            "browserTarget": "angular-async-means:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-async:build:production"
+              "browserTarget": "angular-async-means:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-async:build"
+            "browserTarget": "angular-async-means:build"
           }
         },
         "test": {
@@ -114,18 +114,18 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-async:serve"
+            "devServerTarget": "angular-async-means:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-async:serve:production"
+              "devServerTarget": "angular-async-means:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "angular-async",
+  "defaultProject": "angular-async-means",
   "cli": {
     "analytics": false
   }
