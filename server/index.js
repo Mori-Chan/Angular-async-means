@@ -12,6 +12,14 @@ const mongo = require('mongoDB');
 
 const httpServer = require('http').createServer(express);
 
+if(process.env.NODE_ENV === 'production') {
+  const appPath = path.join( __dirname, '..', 'dist', 'angular-async-means');
+  app.use(express.static(appPath));
+  app.get('*', function(req, res) {
+    res.sendFile(path.resolve(appPath, 'index.html'));
+  });
+}
+
 //socket.ioのインスタンス作成
 const io = require('socket.io')(httpServer, {
   cors: true,
@@ -99,13 +107,6 @@ io.on('connection', (socket) => {
   })
 })
 
-if(process.env.NODE_ENV === 'production') {
-  const appPath = path.join( __dirname, '..', 'dist', 'angular-async-means');
-  app.use(express.static(appPath));
-  app.get('*', function(req, res) {
-    res.sendFile(path.resolve(appPath, 'index.html'));
-  });
-}
 
 const PORT = process.env.PORT || 3001;
 
