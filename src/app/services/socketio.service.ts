@@ -14,8 +14,8 @@ export class SocketioService {
   constructor() { }
 
   connect(chatId) {
-    // this.socket = io();
-    this.socket = io(environment.SOCKET_ENDPOINT);
+    this.socket = io();
+    // this.socket = io(environment.SOCKET_ENDPOINT);
     this.socket.emit('joinChat', { chatId: chatId });
     this.socket.emit('selectMessages', {chatId});
   }
