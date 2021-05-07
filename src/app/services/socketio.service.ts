@@ -26,7 +26,6 @@ export class SocketioService {
     // this.socket = io(this.PORT);
     // this.socket = io();
     this.socket = io(environment.SOCKET_ENDPOINT + PORT);
-    debugger
     // this.socket = io('http://localhost:3001');
     this.socket.emit('joinChat', { chatId: chatId });
     this.socket.emit('selectMessages', {chatId});
