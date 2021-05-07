@@ -10,7 +10,18 @@ app.use(bodyParser.json());
 
 const mongo = require('mongoDB');
 
-const httpServer = require('http').createServer(express);
+const httpServer = require('http').createServer(app);
+
+const PORT = process.env.PORT || 3001;
+
+app.get('/api/port', function(req, res) {
+  console.log('success!!!');
+  res.json({'port': PORT});
+});
+
+httpServer.listen(PORT, () => console.log('Express server listening on port ' + PORT));
+// app.listen(PORT, () => console.log('Express server listening on port ' + PORT));
+
 
 if(process.env.NODE_ENV === 'production') {
   const appPath = path.join( __dirname, '..', 'dist', 'angular-async-means');
@@ -106,9 +117,3 @@ io.on('connection', (socket) => {
     io.to(message.chatId).emit('recieveUpdateComment', 'A message was updated!');
   })
 })
-
-
-// const PORT = process.env.PORT || 3001;
-const PORT = 3001;
-
-httpServer.listen(PORT, () => console.log('Express server listening on port ' + PORT));

@@ -20,6 +20,7 @@ export class ChatComponent implements OnInit {
   comments$: Comment[];
   comment = '';
   currentUser = CURRENT_USER;
+  PORT;
 
   constructor(
     private socketIoService: SocketioService,
@@ -29,14 +30,29 @@ export class ChatComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     // this.chatId = this.route.snapshot.paramMap.get('id');
     this.chatId = 'chat';
-    this.socketIoService.connect(this.chatId);
-    this.recieveJoinedPlayers();
-    this.recieveSelectMessages();
-    this.recieveMessage();
-    this.recieveDeleteComment();
-    this.recieveUpdateComment();
+    this.getPort();
+  }
+
+  getPort() {
+    this.socketIoService.getPort().subscribe(
+          (data) => {
+            this.PORT = data['port'];
+            console.log('次のデータが出力されました：' + data['port']);
+            this.socketIoService.connect(this.chatId, this.PORT);
+            this.recieveJoinedPlayers();
+            this.recieveSelectMessages();
+            this.recieveMessage();
+            this.recieveDeleteComment();
+            this.recieveUpdateComment();
+          },
+          // (data) => { this.PORT = data; },
+          (err) => { console.error('次のエラーが発生しました：' + err); }
+          // (err) => { console.error('something wrong occurred: ' + err); }
+        );
+        // console.log(this.PORT);
   }
 
   recieveJoinedPlayers() {

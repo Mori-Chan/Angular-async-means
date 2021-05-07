@@ -3,19 +3,31 @@ import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import { Comment } from '../class/comment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketioService {
 
-  socket: Socket
+  socket: Socket;
 
-  constructor() { }
+  constructor(private http: HttpClient) {
+  }
 
-  connect(chatId) {
+
+  getPort(): Observable<any> {
+    // console.log(this.http.get('http://localhost:3001/port'));
+    return this.http.get('/api/port');
+  }
+
+
+  connect(chatId, PORT) {
+    // this.socket = io(this.PORT);
     // this.socket = io();
-    this.socket = io(environment.SOCKET_ENDPOINT);
+    this.socket = io(environment.SOCKET_ENDPOINT + PORT);
+    debugger
+    // this.socket = io('http://localhost:3001');
     this.socket.emit('joinChat', { chatId: chatId });
     this.socket.emit('selectMessages', {chatId});
   }
