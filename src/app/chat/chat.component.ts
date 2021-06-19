@@ -73,10 +73,12 @@ export class ChatComponent implements OnInit {
     };
     this.socketIoService.sendMessage(message, this.chatId);
     comment = "";
+    this.socketIoService.selectMessage(this.chatId);
   }
 
   deleteComment(comment: Comment) {
     this.socketIoService.deleteComment(comment, this.chatId);
+    this.socketIoService.selectMessage(this.chatId);
   }
 
   recieveDeleteComment() {
@@ -87,6 +89,7 @@ export class ChatComponent implements OnInit {
 
   updateComment(comment: Comment) {
     this.socketIoService.updateComment(comment, this.chatId);
+    this.socketIoService.selectMessage(this.chatId);
   }
 
   recieveUpdateComment() {

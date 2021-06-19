@@ -45,9 +45,12 @@ export class SocketioService {
     });
   }
 
+  selectMessage(chatId) {
+    this.socket.emit('selectMessages', {chatId});
+  }
+
   sendMessage(message, chatId) {
     this.socket.emit('sendMessage', {message, chatId});
-    this.socket.emit('selectMessages', {chatId});
   }
 
   recieveJoinedPlayers() {
@@ -60,7 +63,6 @@ export class SocketioService {
 
   deleteComment(comment: Comment, chatId) {
     this.socket.emit('deleteComment', {comment, chatId});
-    this.socket.emit('selectMessages', {chatId});
   }
 
   recieveDeleteComment() {
@@ -73,7 +75,6 @@ export class SocketioService {
 
   updateComment(comment: Comment, chatId) {
     this.socket.emit('updateComment', {comment, chatId});
-    this.socket.emit('selectMessages', {chatId});
   }
 
   recieveUpdateComment() {
