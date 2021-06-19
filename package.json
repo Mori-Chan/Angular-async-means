@@ -33,6 +33,7 @@
     "mongodb": "^3.6.9",
     "mongoose": "^5.12.14",
     "rxjs": "~6.5.5",
+    "socket.io": "^4.1.2",
     "socket.io-client": "^4.0.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
