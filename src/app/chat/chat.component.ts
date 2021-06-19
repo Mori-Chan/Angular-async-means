@@ -33,26 +33,12 @@ export class ChatComponent implements OnInit {
 
     // this.chatId = this.route.snapshot.paramMap.get('id');
     this.chatId = 'chat';
-    this.getPort();
-  }
-
-  getPort() {
-    this.socketIoService.getPort().subscribe(
-          (data) => {
-            this.PORT = data['port'];
-            console.log('次のデータが出力されました：' + this.PORT);
-            this.socketIoService.connect(this.chatId, this.PORT);
-            this.recieveJoinedPlayers();
-            this.recieveSelectMessages();
-            this.recieveMessage();
-            this.recieveDeleteComment();
-            this.recieveUpdateComment();
-          },
-          // (data) => { this.PORT = data; },
-          (err) => { console.error('次のエラーが発生しました：' + err); }
-          // (err) => { console.error('something wrong occurred: ' + err); }
-        );
-        // console.log(this.PORT);
+    this.socketIoService.connect(this.chatId);
+    this.recieveJoinedPlayers();
+    this.recieveSelectMessages();
+    this.recieveMessage();
+    this.recieveDeleteComment();
+    this.recieveUpdateComment();
   }
 
   recieveJoinedPlayers() {
