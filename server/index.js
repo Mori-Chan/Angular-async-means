@@ -8,7 +8,7 @@ const Comment = require("./model/comment");
 const app = express();
 app.use(bodyParser.json());
 
-const mongo = require('mongoDB');
+const mongo = require('mongodb');
 
 const httpServer = require('http').createServer(app);
 
