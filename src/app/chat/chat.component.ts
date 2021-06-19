@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit {
     this.socketIoService.getPort().subscribe(
           (data) => {
             this.PORT = data['port'];
-            console.log('次のデータが出力されました：' + data['port']);
+            console.log('次のデータが出力されました：' + this.PORT);
             this.socketIoService.connect(this.chatId, this.PORT);
             this.recieveJoinedPlayers();
             this.recieveSelectMessages();
